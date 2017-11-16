@@ -1,17 +1,5 @@
 import React, { Component } from 'react';
-import {
-        Container,
-        Grid,
-        Image,
-        Segment,
-        Button,
-        List,
-        Divider,
-        Icon,
-        Tab,
-        Menu,
-        Label
-    } from 'semantic-ui-react';
+
 var dir = require('node-dir');
 class ImageGallery extends Component{
 

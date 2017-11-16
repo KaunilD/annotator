@@ -1,0 +1,23 @@
+
+.overflowy{
+    overflow-y: scroll;
+    min-height: 200px;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+.floatright{
+  float: right;
+}
+
+.pad{
+  margin: 5px 10px;
+}
+
+.clickable{
+  cursor: pointer;
+}
+
+.bordered{
+  border: 10px solid #FF0000;
+}

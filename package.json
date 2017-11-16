@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "file-system": "^2.2.2",
     "fs": "0.0.1-security",
     "node-dir": "^0.1.17",
     "react": "^16.1.1",

@@ -1,91 +1,114 @@
 import React, { Component } from 'react';
 import './App.css';
 import {
-        Container,
         Grid,
-        Image,
-        Segment,
         Button,
         List,
         Divider,
         Icon,
-        Tab,
-        Menu,
-        Label
+        Header
     } from 'semantic-ui-react';
-const src="/assets/image.png";
-const panes = [
-    {
-        menuItem: <Menu.Item key="images">
-                    <Icon name="folder" />
-                    Images
-                    <Label>24</Label>
-                </Menu.Item>,
-        render: () =>
-                    <Tab.Pane>
-                        <div className="overflowy">
-                            <Image.Group size='small'>
-                              <Image src={src} />
-                              <Image src={src} />
-                              <Image src={src} />
-                            </Image.Group>
-                        </div>
-
-                    </Tab.Pane>
-    },
-    {
-        menuItem: <Menu.Item key="stats">
-                    <Icon name="area graph" />
-                    Distribution
-                </Menu.Item>,
-        render: () => <Tab.Pane>Tab 1</Tab.Pane>
+import TabComponent from './components/TabComponent'
+import FileUploadButton from './components/FileUploadButton';
+import CanvasAnnotator from './components/CanvasAnnotator';
+class AppContainer extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      images: [],
+      currentImage: null
     }
+    this.onFilesChanged = this.onFilesChanged.bind(this);
+    this.onSelectedImageChange = this.onSelectedImageChange.bind(this);
+  }
+  onFilesChanged(newFiles){
+    let newImages = this.state.images.concat(newFiles);
+    this.setState({
+      images:newImages,
+      currentImage: 0
+    });
+  }
 
-]
+  onSelectedImageChange(newImageIndex){
+    this.setState({
+      currentImage: newImageIndex
+    })
+  }
 
-const AppContainer = () => (
-    <div>
-        <Grid columns={2}>
-            <Grid.Row>
-                <Grid.Column width={13}>
-                    <center>
-                    <Image height="500" src="/assets/image.png"  />
-                    </center>
-                </Grid.Column>
-                <Grid.Column width={3}>
 
-                    <Grid.Row>
-                        <Button content="Save" icon="save" lablePosition="left" />
-                        <Button content="Undo" icon="undo" lablePosition="left" />
-                    </Grid.Row>
-                    <Divider horizontal>Classes</Divider>
-                    <Grid.Row>
-                        <List>
-                            <List.Item>
-                                Orange <Icon name="trash" />
-                            </List.Item>
-                            <List.Item>
-                                Apple <Icon name="trash" />
-                            </List.Item>
-                            <List.Item>
-                                Banana <Icon name="trash" />
-                            </List.Item>
-                        </List>
-                    </Grid.Row>
-                </Grid.Column>
-            </Grid.Row>
+  render() {
+    var currentImage;
+    if(this.state.currentImage == null){
+      currentImage = null;
+    }else{
+      currentImage = this.state.images[parseInt(this.state.currentImage)];
+    }
+    return (
+      <div>
+        <Header as='h1'>
+        Annotator.
+        </Header>
+        <Grid columns={2} divided>
+          <Grid.Row stretched>
+            <Grid.Column width={13}>
+                <CanvasAnnotator image={currentImage} />
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <Grid.Row className="padLR">
+                <FileUploadButton callbackParent={this.onFilesChanged} label="Open"/>
+              </Grid.Row>
+              <Divider horizontal><Icon name="circle thin" /></Divider>
+              <Grid.Row className="padLR">
+                <center>
+                  <Button content="Save" icon="save" lableposition="left" />
+                  <Button content="Undo" icon="undo" lableposition="left" />
+                </center>
+              </Grid.Row>
+              <Divider horizontal>Classes</Divider>
+              <Grid.Row className="padLR">
+                <List>
+                  <List.Item>
+                      New Class
+                      <List.Content floated="right">
+                        <Icon name="plus" className="clickable"/>
+                      </List.Content>
+                  </List.Item>
+                  <List.Item>
+                      Orange
+                      <List.Content floated="right">
+                        <Icon name="trash" className="clickable"/>
+                      </List.Content>
+                  </List.Item>
+                  <List.Item>
+                      Apple
+                      <List.Content floated="right">
+                        <Icon name="trash" className="clickable"/>
+                      </List.Content>
 
+                  </List.Item>
+                  <List.Item>
+                      Banana
+                      <List.Content floated="right">
+                        <Icon name="trash" className="clickable"/>
+                      </List.Content>
+
+                  </List.Item>
+                </List>
+              </Grid.Row>
+              <Divider horizontal><Icon name="circle thin" /></Divider>
+              <Grid.Row className="padLR">
+                <TabComponent
+                  images={this.state.images}
+                  callbackParent={this.onSelectedImageChange}
+                />
+              </Grid.Row>
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
-        <Grid>
-            <Grid.Row>
-                <Grid.Column width={16}>
-                    <Tab panes={panes}/>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    </div>
-
-)
+      </div>
+    );
+  }
+}
 
 class App extends Component {
   render() {

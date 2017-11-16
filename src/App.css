@@ -29,6 +29,26 @@
 
 .overflowy{
     overflow-y: scroll;
-    max-height: 300px;
+    max-height: 100px;
+    min-height: 300px;
     overflow-x: hidden;
+}
+
+.floatright{
+  float: right;
+}
+
+.pad{
+  margin: 5px 10px;
+}
+
+.padLR{
+  margin: 0px 10px;
+}
+.clickable{
+  cursor: pointer;
+}
+
+.height500{
+  min-height: 400px;
 }
