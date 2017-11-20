@@ -6,7 +6,7 @@
 2. Draw bounding boxes around each of the objects.
 3. A `.json` with `filename as keys` and corresponding `array of bounding boxes in each image file will be generated`.
    Example :
-   `\
+   ```javascript
    "20170504_144321.jpg":[
     {
     "bbox": [10, 24, 304, 206],
@@ -17,5 +17,4 @@
     "class": [2]
     }
    ]
-
-   `
+   ```
