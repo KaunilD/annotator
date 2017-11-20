@@ -5,7 +5,7 @@
 ![alt text](https://raw.githubusercontent.com/KaunilD/annotator/master/public/assets/1.png)
 2. Draw bounding boxes around each of the objects.
 3. A `.json` with `filename as keys` and corresponding `array of bounding boxes in each image file will be generated`.
-  <br/>
+
    Example :
    ```javascript
    "20170504_144321.jpg":[
