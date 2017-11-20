@@ -36,6 +36,10 @@ class CanvasAnnotator extends Component{
     console.log(event);
   }
 
+  handleMouseMove(event){
+    console.log(event);
+  }
+
   redrawImage(image){
     this.clearCanvas();
     var ctx = this.refs.canvas.getContext('2d');
