@@ -28,6 +28,14 @@ class CanvasAnnotator extends Component{
     this.clearCanvas();
   }
 
+  handleMouseDown(event){
+    console.log(event);
+  }
+
+  handleMouseUp(event){
+    console.log(event);
+  }
+
   redrawImage(image){
     this.clearCanvas();
     var ctx = this.refs.canvas.getContext('2d');
@@ -66,9 +74,6 @@ class CanvasAnnotator extends Component{
     const ctx = this.refs.canvas.getContext('2d');
     ctx.fillStyle="#FFFFFF";
     ctx.fillRect(0,0, canvasWidth, canvasHeight);
-  }
-
-  updateCanvas() {
   }
 
   render(){
