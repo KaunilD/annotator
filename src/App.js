@@ -41,7 +41,7 @@ class AppContainer extends Component {
     if(this.state.currentImage == null){
       currentImage = null;
     }else{
-      currentImage = this.state.images[parseInt(this.state.currentImage)];
+      currentImage = this.state.images[parseInt(this.state.currentImage, 10)];
     }
     return (
       <div>

@@ -22,8 +22,8 @@ class TabComponent extends Component{
   }
 
   updateCurrentImage(event){
-    this.setState({selectedImage: parseInt(event.target.getAttribute("id"))});
-    this.props.callbackParent(parseInt(event.target.getAttribute("id")));
+    this.setState({selectedImage: parseInt(event.target.getAttribute("id"), 10)});
+    this.props.callbackParent(parseInt(event.target.getAttribute("id"), 10));
   }
 
   componentWillReceiveProps(newProps){
@@ -38,7 +38,7 @@ class TabComponent extends Component{
         return(
           <Image
             key={idx}
-            className={this.state.selectedImage == idx ?'bordered':''}
+            className={this.state.selectedImage === idx ?'bordered':''}
             src={url}
             onClick={this.updateCurrentImage}
             id={idx}
