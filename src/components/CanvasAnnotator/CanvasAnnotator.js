@@ -28,8 +28,8 @@ class CanvasAnnotator extends Component{
 
     this.imageData = null;
     this.ctx = null;
-    this.canvasWidth = 750;
-    this.canvasHeight = 750;
+    this.canvasWidth = 650;
+    this.canvasHeight = 650;
     this.imageWidth = null;
     this.imageHeight = null;
     this.canvasRect = null;
@@ -54,7 +54,7 @@ class CanvasAnnotator extends Component{
   getImageCoordinates(canvasWidth, canvasHeight, eventX, eventY){
 
     return [
-      eventX - this.canvasRect.top, eventY - this.canvasRect.top
+      eventX - this.canvasRect.left, eventY - this.canvasRect.top
     ]
   }
 
@@ -124,7 +124,7 @@ class CanvasAnnotator extends Component{
         _parent.imageWidth = newWidth;
         _parent.imageHeight = newHeight;
 
-        _parent.ctx.drawImage(img, 0, 0, newWidth, newHeight);
+        _parent.ctx.drawImage(img, _parent.startX, _parent.startY, newWidth, newHeight);
         _parent.setState({loading: false});
       }
       img.src = reader.result;
