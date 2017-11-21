@@ -47,8 +47,15 @@ class CanvasAnnotator extends Component{
   componentDidMount() {
     this.ctx = this.refs.canvas.getContext('2d');
     this.canvasRect = this.refs.canvas.getBoundingClientRect();
-    console.log(this.canvasRect);
+
     this.clearCanvas();
+  }
+
+  getImageCoordinates(canvasWidth, canvasHeight, eventX, eventY){
+
+    return [
+      eventX - this.canvasRect.top, eventY - this.canvasRect.top
+    ]
   }
 
   handleMouseDown(event){
@@ -58,13 +65,13 @@ class CanvasAnnotator extends Component{
     this.saved = false;
 
     this.drawing = true;
-
+    console.log(event)
+    let xy = this.getImageCoordinates(750, 750, event.clientX, event.clientY)
     this.rects.push({
-      x: event.clientX - this.canvasRect.left + this.startX,
-      y: event.clientY - this.canvasRect.top + this.startY
+      x: xy[0],
+      y: xy[1]
     });
     this.imageData = this.ctx.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
-    console.log(this.imageData);
   }
 
   handleMouseUp(event){
@@ -75,8 +82,10 @@ class CanvasAnnotator extends Component{
     if(this.drawing){
       this.ctx.putImageData(this.imageData, 0, 0);
 
-      this.rects.peek().a = event.clientX - this.canvasRect.left + this.startX;
-      this.rects.peek().b =  event.clientY - this.canvasRect.top + this.startY;
+      let xy = this.getImageCoordinates(750, 750, event.clientX, event.clientY);
+
+      this.rects.peek().a = xy[0];
+      this.rects.peek().b =  xy[1];
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
@@ -115,7 +124,7 @@ class CanvasAnnotator extends Component{
         _parent.imageWidth = newWidth;
         _parent.imageHeight = newHeight;
 
-        _parent.ctx.drawImage(img, _parent.startX, _parent.startY, newWidth, newHeight);
+        _parent.ctx.drawImage(img, 0, 0, newWidth, newHeight);
         _parent.setState({loading: false});
       }
       img.src = reader.result;
