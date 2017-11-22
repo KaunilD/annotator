@@ -24,14 +24,13 @@ class CanvasAnnotator extends Component{
         imagePresent: false,
       };
     }
-    this.redrawImage = this.redrawImage.bind(this);
 
     this.imageData = null;
     this.ctx = null;
-    this.canvasWidth = 650;
-    this.canvasHeight = 650;
-    this.imageWidth = null;
-    this.imageHeight = null;
+    this.canvasWidth = 0;
+    this.canvasHeight = 0;
+    this.imageWidth = 0;
+    this.imageHeight = 0;
     this.canvasRect = null;
     this.rects = [];
     this.drawing = false;
@@ -39,20 +38,24 @@ class CanvasAnnotator extends Component{
     this.startX = 0;
     this.startY = 0;
 
+    this.redrawImage = this.redrawImage.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
-  componentDidMount() {
+  clearCanvas(){
     this.ctx = this.refs.canvas.getContext('2d');
-    this.canvasRect = this.refs.canvas.getBoundingClientRect();
+    this.ctx.fillStyle="#FFFFFF";
+    console.log(this.canvasWidth, this.canvasHeight);
+    this.ctx.fillRect(0,0, this.canvasWidth, this.canvasHeight);
+  }
 
+  componentDidMount() {
     this.clearCanvas();
   }
 
   getImageCoordinates(canvasWidth, canvasHeight, eventX, eventY){
-
     return [
       eventX - this.canvasRect.left, eventY - this.canvasRect.top
     ]
@@ -65,8 +68,7 @@ class CanvasAnnotator extends Component{
     this.saved = false;
 
     this.drawing = true;
-    console.log(event)
-    let xy = this.getImageCoordinates(750, 750, event.clientX, event.clientY)
+    let xy = this.getImageCoordinates(this.canvasWidth, this.canvasHeight, event.clientX, event.clientY)
     this.rects.push({
       x: xy[0],
       y: xy[1]
@@ -82,7 +84,7 @@ class CanvasAnnotator extends Component{
     if(this.drawing){
       this.ctx.putImageData(this.imageData, 0, 0);
 
-      let xy = this.getImageCoordinates(750, 750, event.clientX, event.clientY);
+      let xy = this.getImageCoordinates(this.canvasWidth, this.canvasHeight, event.clientX, event.clientY);
 
       this.rects.peek().a = xy[0];
       this.rects.peek().b =  xy[1];
@@ -134,33 +136,39 @@ class CanvasAnnotator extends Component{
 
   componentWillReceiveProps(newProps){
     if(newProps.image != null){
+      this.clearCanvas();
       this.setState({imagePresent: true, loading: true});
       this.redrawImage(newProps.image);
+    }else{
+      this.canvasWidth = newProps.width;
+      this.canvasHeight = newProps.height;
+      this.clearCanvas();
     }
   }
 
-  clearCanvas(){
-    this.ctx.fillStyle="#FFFFFF";
-    this.ctx.fillRect(0,0, this.canvasWidth, this.canvasHeight);
+  componentDidUpdate(){
+
+      this.canvasRect = this.refs.canvas.getBoundingClientRect();
+      console.log(this.canvasRect);
   }
 
   render(){
     return(
-      <div>
-        <center>
-          <Dimmer.Dimmable dimmed={!this.state.imagePresent}>
-            <Dimmer active={this.state.loading}>
-              <Loader />
-            </Dimmer>
-            <Dimmer
-              active={!this.state.imagePresent}
-              >
-              <Header as='h2' icon inverted>
-                <Icon name='warning sign' />
-                No images loaded!
-                <Header.Subheader>Load a few images first.</Header.Subheader>
-              </Header>
-            </Dimmer>
+      <Dimmer.Dimmable dimmed={!this.state.imagePresent}>
+        <Dimmer active={this.state.loading}>
+          <Loader />
+        </Dimmer>
+        <Dimmer
+          active={!this.state.imagePresent}
+          >
+          <Header as='h2' icon inverted>
+            <Icon name='warning sign' />
+            No images loaded!
+            <Header.Subheader>
+              Load a few images first.
+            </Header.Subheader>
+          </Header>
+        </Dimmer>
             <canvas
               ref="canvas"
               onMouseDown={this.handleMouseDown}
@@ -169,9 +177,8 @@ class CanvasAnnotator extends Component{
               width={this.canvasWidth}
               height={this.canvasHeight}
             />
-          </Dimmer.Dimmable>
-        </center>
-      </div>
+      </Dimmer.Dimmable>
+
     );
   }
 }

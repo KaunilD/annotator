@@ -1,32 +1,3 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .overflowy{
     overflow-y: scroll;
     max-height: 100px;
@@ -39,16 +10,24 @@
 }
 
 .pad{
-  margin: 5px 10px;
+  margin: 0px;
 }
 
 .padLR{
-  margin: 0px 10px;
+  margin: 0px 10px 0px 0px;
 }
+
 .clickable{
   cursor: pointer;
 }
 
 .height500{
   min-height: 400px;
+}
+
+body{
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
 }

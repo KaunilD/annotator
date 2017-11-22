@@ -16,7 +16,8 @@ class AppContainer extends Component {
     super(props);
     this.state = {
       images: [],
-      currentImage: null
+      currentImage: null,
+      containerRect: {top:0, left:0, right:0, bottom:0}
     }
     this.onFilesChanged = this.onFilesChanged.bind(this);
     this.onSelectedImageChange = this.onSelectedImageChange.bind(this);
@@ -26,6 +27,12 @@ class AppContainer extends Component {
     this.setState({
       images:newImages,
       currentImage: 0
+    });
+  }
+
+  componentDidMount(){
+    this.setState({
+      containerRect: this.refs.canvasContainer.getBoundingClientRect()
     });
   }
 
@@ -45,66 +52,74 @@ class AppContainer extends Component {
     }
     return (
       <div>
-        <Header as='h1'>
-        Annotator.
-        </Header>
-        <Grid columns={2} divided>
-          <Grid.Row stretched>
-            <Grid.Column width={13}>
-                <CanvasAnnotator image={currentImage} />
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Grid.Row className="padLR">
-                <FileUploadButton callbackParent={this.onFilesChanged} label="Open"/>
-              </Grid.Row>
-              <Divider horizontal><Icon name="circle thin" /></Divider>
-              <Grid.Row className="padLR">
-                <center>
-                  <Button content="Save" icon="save" lableposition="left" />
-                  <Button content="Undo" icon="undo" lableposition="left" />
-                </center>
-              </Grid.Row>
-              <Divider horizontal>Classes</Divider>
-              <Grid.Row className="padLR">
-                <List>
-                  <List.Item>
-                      New Class
-                      <List.Content floated="right">
-                        <Icon name="plus" className="clickable"/>
-                      </List.Content>
-                  </List.Item>
-                  <List.Item>
-                      Orange
-                      <List.Content floated="right">
-                        <Icon name="trash" className="clickable"/>
-                      </List.Content>
-                  </List.Item>
-                  <List.Item>
-                      Apple
-                      <List.Content floated="right">
-                        <Icon name="trash" className="clickable"/>
-                      </List.Content>
+      <div
+        ref = 'canvasContainer'
+        style={{
+          height:'100%',
+          width:'75%',
+          position:'absolute',
+          top:'0px',
+          left:'0px',
+          float:'left'
+        }}
+      >
+        <CanvasAnnotator
+          image={currentImage}
+          width={this.state.containerRect.right - this.state.containerRect.left}
+          height={this.state.containerRect.bottom - this.state.containerRect.top}
+        />
+      </div>
+      <div
+        style={{
+          padding:'10px 10px 10px 10px',
+          float:'right',
+          marginLeft:'75%',
+          height:'100vh',
+          width: '25%'
+        }}>
+          <Header as='h1' >Annotator</Header>
+          <Divider horizontal><Icon name="circle thin" /></Divider>
+          <FileUploadButton callbackParent={this.onFilesChanged} label="Open"/>
+          <Divider horizontal><Icon name="circle thin" /></Divider>
+          <center>
+              <Button content="Save" icon="save" lableposition="left" />
+              <Button content="Undo" icon="undo" lableposition="left" />
+          </center>
+          <Divider horizontal>Classes</Divider>
+          <List>
+            <List.Item>
+                New Class
+                <List.Content floated="right">
+                  <Icon name="plus" className="clickable"/>
+                </List.Content>
+            </List.Item>
+            <List.Item>
+                Orange
+                <List.Content floated="right">
+                  <Icon name="trash" className="clickable"/>
+                </List.Content>
+            </List.Item>
+            <List.Item>
+                Apple
+                <List.Content floated="right">
+                  <Icon name="trash" className="clickable"/>
+                </List.Content>
 
-                  </List.Item>
-                  <List.Item>
-                      Banana
-                      <List.Content floated="right">
-                        <Icon name="trash" className="clickable"/>
-                      </List.Content>
+            </List.Item>
+            <List.Item>
+                Banana
+                <List.Content floated="right">
+                  <Icon name="trash" className="clickable"/>
+                </List.Content>
 
-                  </List.Item>
-                </List>
-              </Grid.Row>
-              <Divider horizontal><Icon name="circle thin" /></Divider>
-              <Grid.Row className="padLR">
-                <TabComponent
-                  images={this.state.images}
-                  callbackParent={this.onSelectedImageChange}
-                />
-              </Grid.Row>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+            </List.Item>
+          </List>
+          <Divider horizontal><Icon name="circle thin" /></Divider>
+            <TabComponent
+              images={this.state.images}
+              callbackParent={this.onSelectedImageChange}
+            />
+      </div>
       </div>
     );
   }
