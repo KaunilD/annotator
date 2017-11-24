@@ -68,7 +68,33 @@ class CanvasAnnotator extends Component{
     this.saved = false;
 
     this.drawing = true;
-    let xy = this.getImageCoordinates(this.canvasWidth, this.canvasHeight, event.clientX, event.clientY)
+
+    var x = 0;
+    var y = 0;
+
+    if(event.clientX > this.imageWidth + this.startX){
+        x = this.imageWidth + this.startX;
+    }else{
+        x = event.clientX;
+    }
+    if (event.clientX < this.startX){
+        x = this.startX
+    }else{
+        x = event.clientX;
+    }
+
+    if(event.clientY > this.imageHeight + this.startY){
+        y = this.imageHeight + this.startY;
+    }else{
+        y = event.clientY;
+    }
+    if (event.clientY < this.startY){
+        y = this.startY
+    }else{
+        y = event.clientY;
+    }
+
+    let xy = [x, y];
     this.rects.push({
       x: xy[0],
       y: xy[1]
@@ -84,8 +110,11 @@ class CanvasAnnotator extends Component{
     if(this.drawing){
       this.ctx.putImageData(this.imageData, 0, 0);
 
-      let xy = this.getImageCoordinates(this.canvasWidth, this.canvasHeight, event.clientX, event.clientY);
-
+      //let xy = this.getImageCoordinates(this.canvasWidth, this.canvasHeight, event.clientX, event.clientY);
+      var x = event.clientX > this.imageWidth + this.startX ? this.imageWidth  + this.startX: event.clientX;
+      var y = event.clientY > this.imageHeight  + this.startY ? this.imageHeight + this.startY: event.clientY;
+      console.log(x, y);
+      let xy = [x, y];
       this.rects.peek().a = xy[0];
       this.rects.peek().b =  xy[1];
 
